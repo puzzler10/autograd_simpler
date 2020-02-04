@@ -32,3 +32,16 @@ somefun(6)
     36
 
 
+
+Then you have a class 
+
+```python
+Box
+```
+
+
+
+
+    autograd_simpler.core.Box
+
+
