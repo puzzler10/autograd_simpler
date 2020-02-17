@@ -1,8 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
 
 import numpy as _np
 import types 
@@ -29,23 +24,6 @@ def primitive(f, keepgrad=True):
         return Node(value, f, parents, keepgrad)
     return inner
 
-# def notrace_primitive(f): 
-#     """Doesn't really do much. Evaluates functions, doesn't add them to the computation graph. """
-#     @wraps(f)
-#     def inner(*args, **kwargs): 
-#         def getval(o):      return o.value if type(o) == Node else o
-#         if len(args):       argvals = [getval(o) for o in args]
-#         else:               argvals = args
-#         if len(kwargs):     kwargvals = dict([(k,getval(o)) for k,o in kwargs.items()])
-#         else:               kwargvals =  kwargs
-            
-#         return f(*argvals, **kwargvals)
-#     return inner
-
-
-# In[10]:
-
-
 class Node:
     """A node in a computation graph."""
     def __init__(self, value, fun, parents, keepgrad):
@@ -65,52 +43,6 @@ class Node:
         fun,parents = lambda x: x, []
         return Node(value, fun, parents, keepgrad=True)
     
-    
-
-
-# In[4]:
-
-
-# class Node:     
-#     def __init__(self, value, fun,  parents): 
-#         self.value,self.fun,self.parents = value,fun,parents
-    
-#     @staticmethod
-#     def new_root(value = None): 
-#         fun,parents = lambda x: x, []
-#         return Node(value, fun, parents)
-    
-#     def __repr__(self): 
-#         if self.value is None: str_val = 'None'
-#         else:                  str_val = str(round(self.recipe[1],3))
-#         return "\n" +  "\t" + "Fun: " + str(self.recipe[0])+\
-#                 " Value: "+ str_val + \
-#                 " Parents: " + str(self.parents)  
-#     #(Node.curr_max -self.depth) *
-
-    
-#     ## Overwrite operators to use our functions 
-#     # Don't put self.value or other.value in the arguments of these functions, 
-#     # otherwise you won't be able to access the Node object to create the 
-#     # computational graph. 
-#     # Instead, pass the whole node through. And to prevent recursion errors, 
-#     # extract the value inside the `primitive` function. 
-# #     def __add__(self, other): return add_new(self, other)
-# #     def __radd__(self, other): return add_new(other, self)
-# #     def __sub__(self, other): return sub_new(self, other)
-# #     def __rsub__(self, other): return sub_new(other, self)
-# #     def __truediv__(self, other): return div_new(self, other)
-# #     def __rtruediv__(self, other): return div_new(other, self)
-# #     def __mul__(self, other): return mul_new(self, other)
-# #     def __rmul__(self, other): return mul_new(other, self)
-# #     def __neg__(self): return neg_new(self)
-# #     def __exp__(self): return exp_new(self)
-    
-
-
-# In[5]:
-
-
 def wrap_namespace(old, new):
     """Performs triage on objects from numpy, copying them from old to new namespace. 
        old: __dict__ from original numpy
@@ -146,19 +78,11 @@ def wrap_namespace(old, new):
         
 
 
-# In[6]:
-
-
-# using globals() here means we can access each np function like np.add: 
-# it means it is available to the global space. 
 anp = globals()
 wrap_namespace(_np.__dict__, anp)
 
-
-# In[7]:
-
-
-# Constants w.r.t float data just pass though
+## Definitions taken from here:  
+## https://github.com/mattjj/autodidact/blob/b3b6e0c16863e6c7750b0fc067076c51f34fe271/autograd/numpy/numpy_boxes.py#L8
 setattr(Node, 'ndim', property(lambda self: self.value.ndim))
 setattr(Node, 'size', property(lambda self: self.value.size))
 setattr(Node, 'dtype',property(lambda self: self.value.dtype))
@@ -191,17 +115,4 @@ setattr(Node,'__lt__', lambda self, other: anp['less'](self, other))
 setattr(Node,'__le__', lambda self, other: anp['less_equal'](self, other))
 setattr(Node,'__abs__', lambda self: anp['abs'](self))
 setattr(Node,'__hash__', lambda self: id(self))
-
-
-# In[13]:
-
-
-# convert to python script 
-#!jupyter nbconvert --to script np_wrapping.ipynb
-
-
-# In[ ]:
-
-
-
 
