@@ -1,47 +1,4 @@
+In this repo are jupyter notebooks used to create three blog posts on computational graphs ([one](https://tomroth.com.au/compgraph1/), [two](https://tomroth.com.au/compgraph2/) and [three](https://tomroth.com.au/compgraph3/)) and one [blog post on python decorators](https://tomroth.com.au/decorators/). See the notebooks starting with an underscore for these. The blog posts are the updated version of the notebooks: don't rely on code on the notebook or text to be up to date. 
 
-# A simpler autograd
-> yes it is 
-
-
-## Install
-
-`pip install autograd_simpler`
-
-## How to use
-
-First fun is `somefun()`
-
-```python
-somefun(4)
-```
-
-
-
-
-    16
-
-
-
-```python
-somefun(6)
-```
-
-
-
-
-    36
-
-
-
-Then you have a class 
-
-```python
-Box
-```
-
-
-
-
-    autograd_simpler.core.Box
-
+Then there is a module called `numpy_autograd` that has an implementation of a computational graph. Backprop doesn't work and isn't supported at all at this stage. The `__init__.py` file converts the notebook in that folder to the script every time it is imported, which isn't the most efficient thing, but then again this isn't a productionised system. 
 
